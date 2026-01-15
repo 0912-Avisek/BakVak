@@ -1,10 +1,26 @@
-import { Route, Routes } from 'react-router';
+import { Route, Routes ,Navigate } from 'react-router';
 import ChatPage from './pages/ChatPage.jsx';
-import LoginPage from './pages/LoginPage.jsx';
 import SignUpPage from './pages/SignUpPage.jsx';
+import LoginPage from './pages/LoginPage.jsx';
+import { useAuthStore } from './store/useAuthStore.js';
+import { useEffect } from 'react';
+import PageLoader from './components/PageLoader.jsx';
+import { Toaster } from "react-hot-toast";
+
+
 
 function App() {
-  
+   const { checkAuth , isCheckingAuth , authUser} = useAuthStore();
+
+   useEffect( ()=>{
+     checkAuth();
+   },[checkAuth]); 
+
+   //console.log( {authUser} );
+
+   if(isCheckingAuth){
+    return <PageLoader/>
+   }
 
   return (
     
@@ -17,12 +33,17 @@ function App() {
 
 
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignUpPage />} />
-      <Route path="/chat" element={<ChatPage />} />
+      <Route path="/" element= {authUser ? <ChatPage /> : <Navigate to={"/login"} /> } />
+      <Route path="/login" element= {!authUser ? <LoginPage /> : <Navigate to={"/"} /> } />
+      <Route path="/signup" element= {!authUser ? <SignUpPage /> : <Navigate to={"/"} /> } />
+      
     </Routes>
+   
 
+     <Toaster />
     </div>
+
+
   );
 }
 
