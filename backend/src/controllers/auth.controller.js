@@ -1,5 +1,5 @@
 import { sendWelcomeEmail } from "../email/emailHandler.js";
-import { hashPassword } from "../lib/utilis/bcryptpass.js";
+import { hashPassword ,comparePassword} from "../lib/utilis/bcryptpass.js";
 import User from "../models/user.model.js";
 import { generateToken } from "../lib/utilis/jwtwebtoken.js";
 
@@ -42,7 +42,7 @@ export const signAuth = async(req, res) =>{
              await userDB.save(); // Save user to the database
              generateToken(userDB._id, res); // Generate and send token
 
-    // Send user data in response
+    // Send user data in response  RETURNING//
             res.status(201).json({ 
                 _id: userDB._id,
                 username: userDB.username,
@@ -70,9 +70,46 @@ export const signAuth = async(req, res) =>{
 };
 
 export const loginAuth = async(req, res) =>{
+
+    // Extract email and password from request body
+  const { email, password } = req.body;
+  if(!email || !password){
+    return res.status(400).json({ message: "Email and password are required." });
+  }
+
   
+try{
+    //   Check if user exists
+    const user = await User.findOne({ email });
+    if(!user){
+    return res.status(400).json({ message: "Invalid email or password." });
+    }
+   //   Compare provided password with stored hashed password
+
+  const isPasswordMatch = await comparePassword(password, user.password);
+
+  if(!isPasswordMatch){
+    return res.status(400).json({ message: "Invalid email or password." });
+  }
+
+  generateToken(user._id, res);
+  
+// RETURNING THE USER INFROMATION
+  res.status(200).json({
+    _id: user._id,
+    username: user.username,
+    email: user.email,
+    profilePic: user.profilePic
+  });
+
+}
+catch(error){
+    res.status(500).json({ message: "Server error. Please try again later." });
 }
 
-export const logoutAuth = async(req, res) =>{
+}
 
+export const logoutAuth = async( _, res) =>{
+    res.cookie("token", "", { maxAge:0 });
+    res.status(200).json({ message: "Logged out successfully." });
 }
