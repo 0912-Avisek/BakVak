@@ -1,6 +1,6 @@
 import Router from "express";
-import { getAllContacts, getBothMessages, getChatPatners, sendMessage } from "../controllers/msg.controller";
-import { protectRoute } from "../middleware/auth.middleware";
+import { getAllContacts, getBothMessages, getChatPatners, sendMessage } from "../controllers/msg.controller.js";
+import { protectRoute } from "../middleware/auth.middleware.js";
 
 const messageRouter = Router();
 // Define your message routes here

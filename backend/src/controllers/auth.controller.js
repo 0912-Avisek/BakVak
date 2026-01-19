@@ -6,7 +6,7 @@ import cloudinary from "cloudinary";
 
 export const signAuth = async(req, res) =>{
     //takin out data from req body
-    const { username, password, email } = req.body;
+    const { username , password, email } = req.body;
    try{
     // Input validation
         if( !username || !password || !email){
@@ -51,12 +51,12 @@ export const signAuth = async(req, res) =>{
                 profilePic: userDB.profilePic
              });
     // Send welcome email
-             try{
-             await sendWelcomeEmail(userDB.email, userDB.username, process.env.CLIENT_URL);
+            //  try{
+            //  await sendWelcomeEmail(userDB.email, userDB.username, process.env.CLIENT_URL);
 
-            }catch(err){
-            console.error("Failed to send welcome email:", err);
-            }
+            // }catch(err){
+            // console.error("Failed to send welcome email:", err);
+            // }
 
         }else{
             res.status(400).json({ message: "Invalid user data." });
@@ -108,12 +108,12 @@ catch(error){
     res.status(500).json({ message: "Server error. Please try again later." });
 }
 
-}
+};
 
 export const logoutAuth = async( _, res) =>{
     res.cookie("token", "", { maxAge:0 });
     res.status(200).json({ message: "Logged out successfully." });
-}
+};
 
 export const updateProfile = async(req,res) => {
 try{
@@ -136,4 +136,4 @@ try{
       return res.status(500).json({message: "Internal server error "});
 }
 
-}
+};
