@@ -2,6 +2,7 @@ import { sendWelcomeEmail } from "../email/emailHandler.js";
 import { hashPassword ,comparePassword} from "../lib/utilis/bcryptpass.js";
 import User from "../models/user.model.js";
 import { generateToken } from "../lib/utilis/jwtwebtoken.js";
+// to do cloudinary
 
 export const signAuth = async(req, res) =>{
     //takin out data from req body
@@ -112,4 +113,27 @@ catch(error){
 export const logoutAuth = async( _, res) =>{
     res.cookie("token", "", { maxAge:0 });
     res.status(200).json({ message: "Logged out successfully." });
+}
+
+export const updateProfile = async(req,res) => {
+try{
+     const { profilePic  }= req.body ;
+
+     if(!profilepic) return res.status(401).json({message:"profile pic is required"});
+
+     const userId = req.user._id;
+
+     const uploadResponse = await cloudinary.uploader.upload(profilepic);
+
+     const updatedUser = await User.findByIdAndUpdate(userId, {profilePic : uploadResponse.secure_url}, {new : true});
+     
+
+     res.status(200).json(updatedUser);
+      
+
+}catch(error){
+      console.log("Error in UpdageProfile ",error);
+      return res.status(500).json({message: "Internal server error "});
+}
+
 }
