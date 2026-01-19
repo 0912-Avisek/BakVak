@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { useAuthStore } from '../store/useAuthStore';
+import { useAuthStore } from '../store/useAuthStore.js';
 import { MessageCircleIcon, LockIcon, MailIcon, UserIcon, LoaderIcon } from "lucide-react";
 import { Link } from "react-router";
 
 const SignUpPage = () => {
   
-  const [formData, setFormData]=useState({fullName : "" , email : "", password : ""});
-  const {signup, isSigningUp} = useAuthStore();
+  const [formData, setFormData] = useState({fullName : "" , email : "", password : ""});
+  const { signup , isSigningUp } = useAuthStore();
 
   const handleSubmit =(e)=>{
      e.preventDefault();
