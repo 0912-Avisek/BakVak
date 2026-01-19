@@ -17,7 +17,7 @@ export const getAllContacts = async (req, res) => {
 
 }
 
-export const sendMessage = async (req, res) =>{
+export const sendMessage = async (req, res) => {
     try{
         const senderId =req.user._id;
         const {id : receiverId }= req.params;
@@ -48,7 +48,7 @@ export const sendMessage = async (req, res) =>{
 
 }
 
-export const getBothMessages = async (req, res) =>{
+export const getBothMessages = async (req, res) => {
   try{
 
     const myId = req.user._id;
@@ -70,7 +70,7 @@ export const getBothMessages = async (req, res) =>{
 
 }
 
-export const getChatPatners = async (req, res) =>{
+export const getChatPatners = async (req, res) => {
     try{
        const loggedInUserId = req.user._id;
        
@@ -88,6 +88,10 @@ export const getChatPatners = async (req, res) =>{
             )
         )
        ];
+
+       const chatPartners =await User.find({ _id: {$ne : chatPartnerIds} }).select("-password");
+
+       res.status(200).json(chatPartners);
 
     }catch(error){
         console.log("getChatPatners is not working", error);

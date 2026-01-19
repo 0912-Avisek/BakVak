@@ -1,12 +1,16 @@
 import Router from "express";
+import { getAllContacts, getBothMessages, getChatPatners, sendMessage } from "../controllers/msg.controller";
+import { protectRoute } from "../middleware/auth.middleware";
 
 const messageRouter = Router();
 // Define your message routes here
-messageRouter.route("/contacts").get(getAllContacts);
-messageRouter.route("/chats").get(getChatPartners);
-messageRouter.route("/:id").get(getMessagesByUserId);
+messageRouter.get("/contacts",protectRoute,getAllContacts);
 
-messageRouter.route("/send/:id").post(sendMessage);
+messageRouter.get("/chats", protectRoute, getChatPatners )
+
+messageRouter.get("/:id", protectRoute, getBothMessages )
+
+messageRouter.post("/send/:id", protectRoute, sendMessage);
 
 
 export default messageRouter;

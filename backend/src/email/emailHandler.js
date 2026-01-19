@@ -2,7 +2,7 @@ import { resendClient, sender } from "../lib/resend.js";
 import { createWelcomeEmailTemplate } from "./emailTemplates.js";
 
 
-export const sendWelcomeEmail = async (customeremail ,name ,clientURL) =>{
+const sendWelcomeEmail = async (customeremail ,name ,clientURL) =>{
 
    const { data, error } = await resendClient.emails.send({
         from: sender.email,
@@ -19,4 +19,6 @@ export const sendWelcomeEmail = async (customeremail ,name ,clientURL) =>{
    // console.log("Welcome email sent successfully:", data);
 
 }
+
+export default sendWelcomeEmail;
 

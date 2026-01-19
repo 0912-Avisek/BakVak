@@ -10,10 +10,12 @@ import messageRouter from './routes/message.route.js';
 const app = express();
 
 dotenv.config();
+
+
 //to do cors configuration
 
-app.use(express.json());
-app.use(cookieParser());
+// app.use(express.json());
+// app.use(cookieParser());
 
 app.use("/api/users",authRouter);
 app.use("/api/messages",messageRouter)

@@ -1,8 +1,8 @@
-import { sendWelcomeEmail } from "../email/emailHandler.js";
-import { hashPassword ,comparePassword} from "../lib/utilis/bcryptpass.js";
+import  sendWelcomeEmail  from "../email/emailHandler.js";
+import { hashPassword , comparePassword} from "../lib/utilis/bcryptpass.js";
 import User from "../models/user.model.js";
 import { generateToken } from "../lib/utilis/jwtwebtoken.js";
-// to do cloudinary
+import cloudinary from "cloudinary";
 
 export const signAuth = async(req, res) =>{
     //takin out data from req body
