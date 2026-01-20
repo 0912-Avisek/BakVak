@@ -13,6 +13,7 @@ function App() {
    const { checkAuth , isCheckingAuth , authUser} = useAuthStore();
 
    useEffect( ()=>{
+    
      checkAuth();
    },[checkAuth]); 
 
